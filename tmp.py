@@ -1,22 +1,33 @@
 import pandas as pd
 
-# Create the dataframes
-df1 = pd.DataFrame({'A': ['a', 'c']})
-df2 = pd.DataFrame({'A': ['a', 'b', 'c']})
+# Sample dataframes
+df1 = pd.DataFrame({
+    'A': [1, 2, 3, 4, 5],
+    'B': ['a', 'b', 'c', 'd', 'e'],
+    'C': [10, 20, 30, 40, 50]
+})
 
-# Display the dataframes
-print("DataFrame 1:")
+df2 = pd.DataFrame({
+    'A': [3, 4, 5, 6, 7],
+    'B': ['f', 'g', 'h', 'i', 'j'],
+    'C': [60, 70, 80, 90, 100]
+})
+
+# Print original dataframes
+print("Original df1:")
 print(df1)
-print("\nDataFrame 2:")
+print("\nOriginal df2:")
 print(df2)
 
-# Find rows in df1 not in df2
-rows_in_df1_not_in_df2 = df1[~df1.apply(tuple, 1).isin(df2.apply(tuple, 1))]
+# Merge dataframes on column 'A' to find common rows
+common_rows = df1.merge(df2, on='A', how='inner')
 
-# Find rows in df2 not in df1
-rows_in_df2_not_in_df1 = df2[~df2.apply(tuple, 1).isin(df1.apply(tuple, 1))]
+# Filter out common rows from df1 and df2
+df1_filtered = df1[~df1['A'].isin(common_rows['A'])]
+df2_filtered = df2[~df2['A'].isin(common_rows['A'])]
 
-print("\nRows in df1 not in df2:")
-print(rows_in_df1_not_in_df2)
-print("\nRows in df2 not in df1:")
-print(rows_in_df2_not_in_df1)
+# Print filtered dataframes
+print("\nFiltered df1:")
+print(df1_filtered)
+print("\nFiltered df2:")
+print(df2_filtered)
